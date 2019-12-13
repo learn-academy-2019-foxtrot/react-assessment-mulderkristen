@@ -11,7 +11,7 @@ class App extends Component{
   render(){
     return(
       <div>
-        {/* 1) Here: */}
+        {/* 1) Here: This code is wrapping a Div around the Board class. This is how the dumb component, App, will display Board.  */}
         <Board />
       </div>
     )
@@ -21,7 +21,7 @@ class App extends Component{
 class Board extends Component{
   constructor(){
     super()
-    // 2) Here:
+    // 2) Here: The constructor and super allow for Board to inherit from Component. The state is also being initialized for gameBoard, currentplayer, and winner. 
     this.state = {
       gameBoard: Array(9).fill(null),
       currentPlayer: "🦄",
@@ -30,19 +30,18 @@ class Board extends Component{
   }
 
   gamePlay = (index) => {
-    // 3) Here:
-    const { gameBoard, currentPlayer, winner, clickCount } = this.state
-    // 4) Here:
+    // 3) Here: gamePlay is a method that's being created withing Board and is using object destructuring to call gameBoard, currentPlayer, and winner
+    const { gameBoard, currentPlayer, winner } = this.state
+    // 4) Here: An if statement in gamePlay that looks at the value of the current index and decides if it's null, if it is, it'll update that value to the currentPlayer and update the state of gameboard, currentPlayer (with a ternary operator)
     if(gameBoard[index] === null && winner === null){
       gameBoard[index] = currentPlayer
       this.setState({
         gameBoard: gameBoard,
         currentPlayer: currentPlayer === "🦄" ? "🦆" : "🦄",
-        clickCount: clickCount+1
       })
     }
     if(winner === null){
-      // 5) Here:
+      // 5) Here:  An if statement in gamePlay that checks if winner is strictly equal to null, if it is, it'll then run the winning method. 
       this.winning()
     }
   }
@@ -62,7 +61,7 @@ class Board extends Component{
     winningConditions.map(value => {
       const [a, b, c] = value
       if(gameBoard[a] && gameBoard[a] === gameBoard[b] && gameBoard[a] === gameBoard[c]){
-        // 6) Here:
+        // 6) Here: This method maps through the the winningConditions. First, it use destructuring and then compares the values at each index to see if any of the values are equal to a winning array. If they are, it'll update the state of the winner to the currentPlayer.  
         this.setState({
           winner: currentPlayer
         })
@@ -72,14 +71,14 @@ class Board extends Component{
 
   render(){
     const { gameBoard, currentPlayer, winner } = this.state
-    // 7) Here:
+    // 7) Here: This uses destructuring and runs the gameBoard through a map to return the Square board. 
     let mappedGameBoard = gameBoard.map((value, index) => {
       return(
         <Square
           value={ value }
           index={ index }
           key={ index }
-          {/* 8) Here: */}
+          {/* 8) Here: This accesses the Square board and displays the value, index, and key at their current state */}
           gamePlay={ this.gamePlay }
         />
       )
@@ -89,17 +88,17 @@ class Board extends Component{
         <h1>Tic Tac Toe</h1>
 
           <div className="statusDiv">
-            {/* 9) Here: */}
+            {/* 9) Here: This is the return statement where all the information will be displayed. In this div, the current player is displayed. */}
             The Current Player is: { currentPlayer }
           </div>
 
           <div className="statusDiv">
-            {/* 10) Here: */}
+            {/* 10) Here: In this div, the state of the winner is displayed which will change when it's not null (line 67 will update this)*/}
             The Winner is: { winner }
           </div>
 
           <div id="outcomeBoard">
-            {/* 11) Here: */}
+            {/* 11) Here: In this div, the state of the mappedGameBoard is displayed which is what the current Square looks like from line 78*/}
             { mappedGameBoard }
           </div>
 
@@ -111,14 +110,14 @@ class Board extends Component{
 class Square extends Component{
 
   handleSquareClick = () => {
-    // 12) Here:
+    // 12) Here: This is a method in Square that calls the method of gamePlay from Board at its current index. 
     this.props.gamePlay(this.props.index)
   }
 
   render(){
     return(
       <div id="square" onClick={ this.handleSquareClick }>
-        {/* 13) Here: */}
+        {/* 13) Here: In this div, this handles the click method so that when a square is clicked, the handleSquareClick method will run and display the state of the value*/}
         { this.props.value }
       </div>
     )
